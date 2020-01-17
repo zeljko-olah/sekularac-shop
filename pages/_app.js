@@ -1,6 +1,7 @@
 import { Provider } from "mobx-react";
 import App from "next/app";
 import React from "react";
+import Layout from "../components/_App/Layout";
 import { fetchInitialStoreState, Store } from "../store";
 
 class MyMobxApp extends App {
@@ -29,7 +30,9 @@ class MyMobxApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <Provider store={this.state.store}>
-        <Component {...pageProps} />
+        <Layout {...pageProps}>
+          <Component {...pageProps} />
+        </Layout>
       </Provider>
     );
   }
