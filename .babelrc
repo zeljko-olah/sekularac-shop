@@ -1,6 +1,16 @@
 {
   "presets": ["next/babel"],
   "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@root": "./",
+          "@components": "./components"
+        }
+      }
+    ],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]
