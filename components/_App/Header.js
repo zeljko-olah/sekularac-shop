@@ -27,7 +27,7 @@ function Header({ user }) {
         <Link href="/">
           <Menu.Item header active={isActive("/")}>
             <Image size="mini" src="/logo.svg" style={{ marginRight: "1em" }} />
-            ReactReserve
+            Sekularac Art Shop
           </Menu.Item>
         </Link>
 

@@ -15,7 +15,7 @@ function Layout({ user, children }) {
           rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css"
         />
-        <title>ReactReserve</title>
+        <title>Sekularac Art Shop</title>
       </Head>
       <Header user={user} />
       <Container text style={{ paddingTop: "1em" }}>
