@@ -1,19 +1,32 @@
-export default props => {
+import { useObserver } from "mobx-react-lite";
+import { useContext, useEffect } from "react";
+import { start, stop, StoreContext } from "../store";
+export default () => {
+  const store = useContext(StoreContext);
+
+  useEffect(() => {
+    start();
+    return stop;
+  }, []);
   return (
-    <div className={props.light ? "light" : ""}>
-      {format(new Date(props.lastUpdate))}
-      <style jsx>{`
-        div {
-          padding: 15px;
-          color: #82fa58;
-          display: inline-block;
-          font: 50px menlo, monaco, monospace;
-          background-color: #000;
-        }
-        .light {
-          background-color: #999;
-        }
-      `}</style>
+    <div>
+      {useObserver(() => (
+        <div className={store.light ? "light" : ""}>
+          {format(new Date(store.lastUpdate))}
+          <style jsx>{`
+            div {
+              padding: 15px;
+              color: #82fa58;
+              display: inline-block;
+              font: 50px menlo, monaco, monospace;
+              background-color: #000;
+            }
+            .light {
+              background-color: #999;
+            }
+          `}</style>
+        </div>
+      ))}
     </div>
   );
 };

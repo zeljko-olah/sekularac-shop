@@ -1,33 +1,46 @@
-import { action, observable } from "mobx";
-import { useStaticRendering } from "mobx-react";
+import { action } from "mobx";
+import { useObservable, useStaticRendering } from "mobx-react-lite";
+import { createContext, useCallback } from "react";
 
 const isServer = typeof window === "undefined";
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useStaticRendering(isServer);
 
-export class Store {
-  @observable lastUpdate = 0;
-  @observable light = false;
+let StoreContext = createContext();
+let start;
+let stop;
+let store;
 
-  hydrate(serializedStore) {
-    this.lastUpdate =
-      serializedStore.lastUpdate != null
-        ? serializedStore.lastUpdate
-        : Date.now();
-    this.light = !!serializedStore.light;
-  }
+function initializeData(initialData = store || {}) {
+  const { lastUpdate = Date.now(), light } = initialData;
+  return {
+    lastUpdate,
+    light: Boolean(light)
+  };
+}
 
-  @action start = () => {
-    this.timer = setInterval(() => {
-      this.lastUpdate = Date.now();
-      this.light = true;
-    }, 1000);
+function InjectStoreContext({ children, initialData }) {
+  let timerInterval = null;
+  store = useObservable(initializeData(initialData));
+
+  start = useCallback(
+    action(() => {
+      timerInterval = setInterval(() => {
+        store.lastUpdate = Date.now();
+        store.light = true;
+      }, 1000);
+    })
+  );
+
+  stop = () => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
   };
 
-  stop = () => clearInterval(this.timer);
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
 }
 
-export async function fetchInitialStoreState() {
-  // You can do anything to fetch initial store state
-  return {};
-}
+export { InjectStoreContext, StoreContext, initializeData, start, stop, store };
