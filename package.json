@@ -9,8 +9,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "mobx": "^5.15.2",
+    "mobx-react": "^6.1.5",
     "next": "^9.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3"
   }
 }
