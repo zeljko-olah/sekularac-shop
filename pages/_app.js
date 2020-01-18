@@ -1,29 +1,39 @@
+import { storeContext } from "@contexts";
+import { useStores } from "@hooks/use-stores";
 import Layout from "../components/_App/Layout";
-import { initializeData, InjectStoreContext } from "../store";
 
-function MyMobxApp({ Component, pageProps, initialStoreData }) {
+let store;
+
+function MyApp({ Component, pageProps, initialStoreData }) {
+  const { userStore, counterStore, themeStore } = useStores();
+
+  store = {
+    userStore,
+    counterStore,
+    themeStore
+  };
+
   return (
-    <InjectStoreContext initialData={initialStoreData}>
+    <storeContext.Provider value={store}>
       <Layout {...pageProps}>
-        <Component {...pageProps} />
+        <Component {...pageProps} userStore={userStore} />
       </Layout>
-    </InjectStoreContext>
+    </storeContext.Provider>
   );
 }
 
-MyMobxApp.getInitialProps = async ({ Component, ctx }) => {
+MyApp.getInitialProps = async ({ Component, ctx }) => {
   let pageProps = {};
-  const initialStoreData = initializeData();
 
   // Provide the store to getInitialProps of pages
   if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps({ ...ctx, initialStoreData });
+    pageProps = await Component.getInitialProps({ ...ctx, store });
   }
 
   return {
     pageProps,
-    initialStoreData
+    store
   };
 };
 
-export default MyMobxApp;
+export default MyApp;

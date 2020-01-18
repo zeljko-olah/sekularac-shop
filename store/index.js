@@ -1,46 +1,14 @@
-import { action } from "mobx";
-import { useObservable, useStaticRendering } from "mobx-react-lite";
-import { createContext, useCallback } from "react";
+import { configure } from "mobx";
+import { useStaticRendering } from "mobx-react-lite";
+import { CounterStore } from "./counter-store";
+import { ThemeStore } from "./theme-store";
+import { UserStore } from "./user-store";
 
 const isServer = typeof window === "undefined";
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useStaticRendering(isServer);
+configure({
+  enforceActions: "always"
+});
 
-let StoreContext = createContext();
-let start;
-let stop;
-let store;
-
-function initializeData(initialData = store || {}) {
-  const { lastUpdate = Date.now(), light } = initialData;
-  return {
-    lastUpdate,
-    light: Boolean(light)
-  };
-}
-
-function InjectStoreContext({ children, initialData }) {
-  let timerInterval = null;
-  store = useObservable(initializeData(initialData));
-
-  start = useCallback(
-    action(() => {
-      timerInterval = setInterval(() => {
-        store.lastUpdate = Date.now();
-        store.light = true;
-      }, 1000);
-    })
-  );
-
-  stop = () => {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-    }
-  };
-
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
-}
-
-export { InjectStoreContext, StoreContext, initializeData, start, stop, store };
+export { CounterStore, ThemeStore, UserStore };

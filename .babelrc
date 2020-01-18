@@ -8,7 +8,9 @@
         "alias": {
           "@root": "./",
           "@components": "./components",
-          "@store": "./store"
+          "@store": "./store",
+          "@hooks": "./hooks",
+          "@contexts": "./contexts"
         }
       }
     ],

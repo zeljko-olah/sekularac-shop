@@ -1,3 +1,5 @@
+import { useStores } from "@hooks/use-stores";
+import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
@@ -7,10 +9,12 @@ Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
-function Header({ user }) {
+const Header = observer(() => {
+  const { userStore } = useStores();
+  console.log(userStore.user && userStore.user.name);
   const router = useRouter();
-  const isRoot = user && user.role === "root";
-  const isAdmin = user && user.role === "admin";
+  const isRoot = userStore.user && userStore.user.role === "root";
+  const isAdmin = userStore.user && userStore.user.role === "admin";
   const isRootOrAdmin = isRoot || isAdmin;
 
   function isActive(route) {
@@ -18,7 +22,13 @@ function Header({ user }) {
   }
 
   function handleLogout() {
-    alert("Logout");
+    console.log("Handle Logout called");
+    userStore.logout();
+  }
+
+  function handleLogin() {
+    console.log("Handle login called");
+    userStore.login();
   }
 
   return (
@@ -47,7 +57,7 @@ function Header({ user }) {
           </Link>
         )}
 
-        {user ? (
+        {userStore.user ? (
           <>
             <Link href="/account">
               <Menu.Item header active={isActive("/account")}>
@@ -63,12 +73,10 @@ function Header({ user }) {
           </>
         ) : (
           <>
-            <Link href="/login">
-              <Menu.Item header active={isActive("/login")}>
-                <Icon name="sign in" size="large" />
-                Login
-              </Menu.Item>
-            </Link>
+            <Menu.Item header onClick={handleLogin}>
+              <Icon name="sign in" size="large" />
+              Login
+            </Menu.Item>
 
             <Link href="/signup">
               <Menu.Item header active={isActive("/signup")}>
@@ -81,6 +89,6 @@ function Header({ user }) {
       </Container>
     </Menu>
   );
-}
+});
 
 export default Header;
