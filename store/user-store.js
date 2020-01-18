@@ -2,12 +2,7 @@ import { action, computed, observable } from "mobx";
 
 export class UserStore {
   @observable
-  user = {
-    id: 10,
-    name: "John",
-    lastname: "Doe",
-    role: "root"
-  };
+  user = null;
 
   @action
   login() {

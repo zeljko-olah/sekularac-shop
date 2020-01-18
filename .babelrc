@@ -10,6 +10,8 @@
           "@components": "./components",
           "@store": "./store",
           "@hooks": "./hooks",
+          "@models": "./models",
+          "@utils": "./utils",
           "@contexts": "./contexts"
         }
       }

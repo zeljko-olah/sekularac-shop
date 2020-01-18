@@ -1,34 +1,21 @@
-import { useStores } from "@hooks/use-stores";
-import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
 import { Container, Icon, Image, Menu } from "semantic-ui-react";
+import { handleLogout } from "../../utils/auth";
 
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
-const Header = observer(() => {
-  const { userStore } = useStores();
-  console.log(userStore.user && userStore.user.name);
+function Header({ user }) {
   const router = useRouter();
-  const isRoot = userStore.user && userStore.user.role === "root";
-  const isAdmin = userStore.user && userStore.user.role === "admin";
+  const isRoot = user && user.role === "root";
+  const isAdmin = user && user.role === "admin";
   const isRootOrAdmin = isRoot || isAdmin;
 
   function isActive(route) {
     return route === router.pathname;
-  }
-
-  function handleLogout() {
-    console.log("Handle Logout called");
-    userStore.logout();
-  }
-
-  function handleLogin() {
-    console.log("Handle login called");
-    userStore.login();
   }
 
   return (
@@ -37,14 +24,7 @@ const Header = observer(() => {
         <Link href="/">
           <Menu.Item header active={isActive("/")}>
             <Image size="mini" src="/logo.svg" style={{ marginRight: "1em" }} />
-            Sekularac Art Shop
-          </Menu.Item>
-        </Link>
-
-        <Link href="/cart">
-          <Menu.Item header active={isActive("/cart")}>
-            <Icon name="cart" size="large" />
-            Cart
+            ReactReserve
           </Menu.Item>
         </Link>
 
@@ -57,8 +37,14 @@ const Header = observer(() => {
           </Link>
         )}
 
-        {userStore.user ? (
+        {user ? (
           <>
+            <Link href="/cart">
+              <Menu.Item header active={isActive("/cart")}>
+                <Icon name="cart" size="large" />
+                Cart
+              </Menu.Item>
+            </Link>
             <Link href="/account">
               <Menu.Item header active={isActive("/account")}>
                 <Icon name="user" size="large" />
@@ -73,10 +59,12 @@ const Header = observer(() => {
           </>
         ) : (
           <>
-            <Menu.Item header onClick={handleLogin}>
-              <Icon name="sign in" size="large" />
-              Login
-            </Menu.Item>
+            <Link href="/login">
+              <Menu.Item header active={isActive("/login")}>
+                <Icon name="sign in" size="large" />
+                Login
+              </Menu.Item>
+            </Link>
 
             <Link href="/signup">
               <Menu.Item header active={isActive("/signup")}>
@@ -89,6 +77,6 @@ const Header = observer(() => {
       </Container>
     </Menu>
   );
-});
+}
 
 export default Header;
