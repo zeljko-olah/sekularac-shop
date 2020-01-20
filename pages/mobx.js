@@ -1,17 +1,18 @@
 import { useStores } from "@hooks/use-stores";
-import Axios from "axios";
-import { observer } from "mobx-react-lite";
+import { action } from "mobx";
+import { observer, useLocalStore } from "mobx-react-lite";
 import React from "react";
 
 // src/components/Counter.tsx
 export const Counter = observer(() => {
   const { counterStore } = useStores();
+  const counter = useLocalStore(() => counterStore);
 
   return (
     <>
-      <div>{counterStore.count}</div>
-      <button onClick={() => counterStore.increment()}>++</button>
-      <button onClick={() => counterStore.decrement()}>--</button>
+      <div>{counter.count}</div>
+      <button onClick={action(() => counter.increment())}>++</button>
+      <button onClick={action(() => counter.decrement())}>--</button>
     </>
   );
 });
@@ -36,18 +37,17 @@ export const ThemeToggler = observer(() => {
 // src/App.tsx
 const App = ({ stars }) => (
   <main>
-    <div>Next stars: {stars}</div>
     <Counter />
     <ThemeToggler />
   </main>
 );
 
-App.getInitialProps = async ctx => {
-  console.log(ctx.initialStoreData);
-  const url = "https://api.github.com/repos/zeit/next.js";
-  const response = await Axios.get(url);
-  const json = response.data;
-  return { stars: json.stargazers_count, store: ctx.initialStoreData };
-};
+// App.getInitialProps = async ctx => {
+//   console.log(ctx.initialStoreData);
+//   const url = "https://api.github.com/repos/zeit/next.js";
+//   const response = await Axios.get(url);
+//   const json = response.data;
+//   return { stars: json.stargazers_count, store: ctx.initialStoreData };
+// };
 
 export default App;

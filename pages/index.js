@@ -1,9 +1,28 @@
-function Index({ user, orders }) {
+import ProductList from "@components/Index/ProductList";
+import ProductPagination from "@components/Index/ProductPagination";
+import baseUrl from "@utils/baseUrl";
+import axios from "axios";
+import React from "react";
+
+function Home({ products, totalPages }) {
   return (
     <>
-      <h1>Index Page</h1>
+      <ProductList products={products} />
+      <ProductPagination totalPages={totalPages} />
     </>
   );
 }
 
-export default Index;
+Home.getInitialProps = async ctx => {
+  const page = ctx.query.page ? ctx.query.page : "1";
+  const size = 9;
+  const url = `${baseUrl}/api/products`;
+  const payload = { params: { page, size } };
+  // fetch data on server
+  const response = await axios.get(url, payload);
+  // return response data as an object
+  return response.data;
+  // note: this object will be merged with existing props
+};
+
+export default Home;
