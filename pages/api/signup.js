@@ -1,4 +1,5 @@
 // import Cart from "../../models/Cart";
+import Cart from "@models/Cart";
 import User from "@models/User";
 import connectDb from "@utils/connectDb";
 import bcrypt from "bcrypt";

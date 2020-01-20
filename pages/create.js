@@ -44,23 +44,23 @@ function CreateProduct() {
     }
   }
 
-  // async function handleImageUpload() {
-  //   const data = new FormData();
-  //   data.append("file", product.media);
-  //   data.append("upload_preset", "NodeShop");
-  //   data.append("cloud_name", "zeljkoolah");
-  //   const response = await axios.post(process.env.CLOUDINARY_URL, data);
-  //   const mediaUrl = response.data.url;
-  //   return mediaUrl;
-  // }
+  async function handleImageUpload() {
+    const data = new FormData();
+    data.append("file", product.media);
+    data.append("upload_preset", "NodeShop");
+    data.append("cloud_name", "zeljkoolah");
+    const response = await axios.post(process.env.CLOUDINARY_URL, data);
+    const mediaUrl = response.data.url;
+    return mediaUrl;
+  }
 
   async function handleSubmit(event) {
     try {
       event.preventDefault();
       setLoading(true);
       setError("");
-      // const mediaUrl = await handleImageUpload();
-      const mediaUrl = "/images/product.jpeg";
+      const mediaUrl = await handleImageUpload();
+      // const mediaUrl = "/images/product.jpeg";
       const url = `${baseUrl}/api/product`;
       const { name, price, description } = product;
       const payload = { name, price, description, mediaUrl };

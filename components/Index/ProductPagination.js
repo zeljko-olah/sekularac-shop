@@ -6,15 +6,17 @@ function ProductPagination({ totalPages }) {
 
   return (
     <Container textAlign="center" style={{ margin: "2em" }}>
-      <Pagination
-        defaultActivePage={1}
-        totalPages={totalPages}
-        onPageChange={(event, data) => {
-          data.activePage === 1
-            ? router.push("/")
-            : router.push(`/?page=${data.activePage}`);
-        }}
-      />
+      {totalPages !== 1 && (
+        <Pagination
+          defaultActivePage={1}
+          totalPages={totalPages}
+          onPageChange={(event, data) => {
+            data.activePage === 1
+              ? router.push("/")
+              : router.push(`/?page=${data.activePage}`);
+          }}
+        />
+      )}
     </Container>
   );
 }

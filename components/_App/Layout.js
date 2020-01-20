@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Container } from "semantic-ui-react";
 import HeadContent from "./HeadContent";
 import Header from "./Header";
+import "./Layout.css";
 
 function Layout({ user, children }) {
   return (
@@ -18,7 +19,7 @@ function Layout({ user, children }) {
         <title>Sekularac Art Shop</title>
       </Head>
       <Header user={user} />
-      <Container text style={{ paddingTop: "1em" }}>
+      <Container className="Layout__Container" text>
         {children}
       </Container>
     </>
