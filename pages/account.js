@@ -1,31 +1,30 @@
-// function Account({ user, orders }) {
-//   return (
-//     <>
-//       <AccountHeader {...user} />
-//       <AccountOrders orders={orders} />
-//       {user.role === "root" && <AccountPermissions />}
-//     </>
-//   );
-// }
+import axios from "axios";
+import { parseCookies } from "nookies";
+import AccountHeader from "../components/Account/AccountHeader";
+import AccountOrders from "../components/Account/AccountOrders";
+import AccountPermissions from "../components/Account/AccountPermissions";
+import baseUrl from "../utils/baseUrl";
 
 function Account({ user, orders }) {
   return (
     <>
-      <h1>Account Page</h1>
+      <AccountHeader {...user} />
+      <AccountOrders orders={orders} />
+      {user.role === "root" && <AccountPermissions />}
     </>
   );
 }
 
-// Account.getInitialProps = async ctx => {
-//   const { token } = parseCookies(ctx.req);
-//   console.log("execute");
-//   if (!token) {
-//     return { orders: [] };
-//   }
-//   const payload = { headers: { Authorization: token } };
-//   const url = `${baseUrl}/api/orders`;
-//   const response = await axios.get(url, payload);
-//   return response.data;
-// };
+Account.getInitialProps = async ctx => {
+  const { token } = parseCookies(ctx.req);
+  console.log("execute");
+  if (!token) {
+    return { orders: [] };
+  }
+  const payload = { headers: { Authorization: token } };
+  const url = `${baseUrl}/api/orders`;
+  const response = await axios.get(url, payload);
+  return response.data;
+};
 
 export default Account;

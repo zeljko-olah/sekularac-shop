@@ -19,9 +19,7 @@ function Layout({ user, children }) {
         <title>Sekularac Art Shop</title>
       </Head>
       <Header user={user} />
-      <Container className="Layout__Container" text>
-        {children}
-      </Container>
+      <Container className="Layout__Container">{children}</Container>
     </>
   );
 }
